@@ -16,11 +16,15 @@ function Dashboard(props) {
         traders: []
     })
 
-    const getTraders = () => {
-        setState({
-            ...state,
-            traders: [...TraderListData]
-        })
+
+    const getTraders = async () => {
+        const response = await axios.get(tradersUrl);
+        if (response) {
+            setState({
+                ...state,
+                traders: [...response.data] || []
+            })
+        }
     }
 
     const showModal = () => {
@@ -31,10 +35,10 @@ function Dashboard(props) {
     }
 
     const handleOk = async () => {
-        // Here we would send a request to the backend to create a new trader
-        // After creating a new trader, refresh traders list
+        const paramUrl = `/firstname/${state.firstName}/lastname/${state.lastName}/dob/${state.dob}/country/${state.country}/email/${state.email}`;
+        const response = await axios.post(createTraderUrl + paramUrl, {});
+        // Refresh traders list
         await getTraders();
-        // Close the modal & unset all fields
         setState({
             ...state,
             isModalVisible: false,
@@ -46,6 +50,8 @@ function Dashboard(props) {
         });
     };
 
+
+    
     const onInputChange = (field, value) => {
         setState({
             ...state,
@@ -104,7 +110,7 @@ function Dashboard(props) {
                             </Modal>
                         </div>
                     </div>
-            <TraderList onTraderDeleteClick={onTraderDelete} />
+            <TraderList onTraderDeleteClick={onTraderDelete} traders={ state.traders } />
         </div>
     </div>
   )
