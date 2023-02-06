@@ -1,2 +1,3 @@
 # Trading Frontend Application
-This project is under development. Since this project follows the GitFlow, the final work will be merged to the master branch after Team Code Team.
+
+This project is the skeleton source code for the React Front End Trading App
